@@ -1,8 +1,9 @@
 # Runcloud Client Documentation
 
-![test](https://img.shields.io/appveyor/tests/jmdisuanco/runpod-client)
+![test](https://img.shields.io/appveyor/tests/jmdisuanco/runpod-client/main)
+![build](https://img.shields.io/appveyor/build/jmdisuanco/runpod-client/main)
 
-This API provides functionality to interact with the Runpod.io API.
+This unofficial runpod.io client provides functionality to interact with the Runpod.io API.
 
 ## Installation
 
