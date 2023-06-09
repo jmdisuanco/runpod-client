@@ -194,16 +194,15 @@ const runpod = (key: string) => (args: any) => {
 	switch (action) {
 		case "list":
 			return list(url);
-			break;
+
 		case "start":
 			return start(url, id, count);
-			break;
+
 		case "stop":
 			return stop(url, id);
-			break;
+
 		case "get":
 			return get(url, id);
-			break;
 		// case "create":
 		// 	return create({ url, ...args });
 		// 	break;
