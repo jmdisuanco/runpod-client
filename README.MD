@@ -1,54 +1,53 @@
-# API Documentation
+# Runcloud Client Documentation
 
-This API provides functionality to interact with the Runpod.io API. It exports a function called runpod that takes an API key as a parameter. This function returns another function that accepts an object with an action field and other fields depending on the value of the action.
+![test](https://img.shields.io/appveyor/tests/jmdisuanco/runpod-client)
+
+This API provides functionality to interact with the Runpod.io API.
+
+## Installation
+
+```bash
+npm install runpod-client
+```
+
+## Import runcloud-client
+
+```javascript
+import runpod from "runpod-client";
+```
 
 ## Initialize:
 
 ```javascript
-runpod Javascript const runpod = (key: string) => (args: any) => {...}
-
+const rp = runpod(API_KEY); //make ure to add your api key here
 ```
 
-- key: API key for the Runpod.io API. args: an object with an action field and other fields depending on the value of the action. Return a call to one of the following functions based on the value of args.action: list, start, stop, get, or create.
-
-## List
+## List all pods
 
 ```javascript
-const list = async (url:string) => {...}
+const pods = await rp("list");
+for (const pod of pods) {
+	console.log(pod);
+}
 ```
 
-- url: URL for the Runpod.io API. Return a list of all pods associated with the API key.
-
-## Start
+## Get a specific pod
 
 ```javascript
-const start = async (url: string, id: string, count = 1) => {...}
+const pod = await rp("get", POD_ID); //Replace POD_ID your existing pod id
+console.log(pod);
 ```
 
-- url: URL for the Runpod.io API. id: ID of the pod to be started. count: GPU count of the pod to be started (default value is 1). Resume a paused pod with the specified ID and GPU count, and return information about the pod.
-
-## Stop
+## Start a pod
 
 ```javascript
-const stop = async (url: string, id: string) => {...}
+const pod = await rp("start", POD_ID); //Replace POD_ID your existing pod id
+console.log(pod);
 ```
 
-- url: URL for the Runpod.io API. id: ID of the pod to be stopped. Stop a running pod with the specified ID, and return information about the pod.
-
-## Get
+## Stop a pod
 
 ```javascript
-const get = async (url: string, id: string) => {...}
+const pod = await rp("stop", POD_ID); //Replace POD_ID your existing pod id
+console.log(pod);
 ```
-
-- url: URL for the Runpod.io API. id: ID of the pod to get information about. Return information about the pod with the specified ID.
-
-## ~Create~ (WIP)
-
-```javascript
-const create = async ({ url, cloudType, name, env, gpu, volumeInGb, containerDiskInGb, minVcpuCount, minMemoryInGb, gpuTypeId, dockerArgs, ports, volumeMountPath, imageName, }: ICreatePod) => {...}
-```
-
-- ICreatePod: an interface containing fields required to create a pod. Create and deploy a pod based on the input parameters passed in the interface ICreatePod, and return information about the created pod.
-
-Note: All HTTP requests made by the above functions use the fetch API to send data in JSON format and include a "Content-Type" header of "application/json". The response data from each function is parsed as JSON format.
