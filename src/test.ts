@@ -62,7 +62,6 @@ test("stop function", async () => {
 test("get function", async () => {
 	const pods = await runpod(key)({
 		action: "list",
-		url: "https://api.runpod.io/graphql",
 	});
 	const podToGet = pods[0];
 	const gotPod = await runpod(key)({
@@ -70,4 +69,17 @@ test("get function", async () => {
 		id: podToGet.id,
 	});
 	expect(gotPod.pod.runtime).toBeDefined();
+});
+
+test("getGPU function", async () => {
+	const gpus = await runpod(key)({
+		action: "getGPUTypes",
+	});
+	const GPUtoGet = gpus[0];
+	const gotGPU = await runpod(key)({
+		action: "getGPU",
+		id: GPUtoGet,
+		count: 1,
+	});
+	expect(gotGPU.length).toBeGreaterThan(0);
 });

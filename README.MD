@@ -62,3 +62,16 @@ for (const gpuType of gpuTypes) {
 	console.log(gpuType);
 }
 ```
+
+## List GPU type by ID
+
+```javascript
+const gpuTypes = await rp({
+	action: "getGPU",
+	id: "NVIDIA GeForce RTX 3090",
+	count: 1,
+});
+for (const gpuType of gpuTypes) {
+	console.log(gpuType);
+}
+```

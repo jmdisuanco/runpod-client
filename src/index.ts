@@ -207,6 +207,35 @@ const get = async (url: string, id: string) => {
 	const res = await response.json();
 	return res.data;
 };
+const getGPU = async (url: string, id: string, count: number) => {
+	const response = await fetch(url, {
+		method: "POST",
+		headers: { "Content-Type": "application/json" },
+		body: JSON.stringify({
+			query: `
+                 query GpuTypes {
+                    gpuTypes(input: {id: "NVIDIA GeForce RTX 3090"}) {
+                        id
+                        displayName
+                        memoryInGb
+                        secureCloud
+                        communityCloud
+                        lowestPrice(input: {gpuCount: ${count || 1}}) {
+                        minimumBidPrice
+                        uninterruptablePrice
+                        }
+                    }
+                }
+            `,
+		}),
+	});
+	const res = await response.json();
+	if (res.errors) {
+		console.log(res.errors[0].message);
+	} else {
+		return res.data.gpuTypes;
+	}
+};
 
 const runpod = (key: string) => (args: any) => {
 	const { action, id, count } = args;
@@ -223,6 +252,10 @@ const runpod = (key: string) => (args: any) => {
 
 		case "get":
 			return get(url, id);
+
+		case "getGPU":
+			return getGPU(url, id, count);
+
 		case "getGPUTypes":
 			return getGPUTypes(url);
 		// case "create":
