@@ -214,7 +214,7 @@ const getGPU = async (url: string, id: string, count: number) => {
 		body: JSON.stringify({
 			query: `
                  query GpuTypes {
-                    gpuTypes(input: {id: "NVIDIA GeForce RTX 3090"}) {
+                    gpuTypes(input: {id: "${id}"}) {
                         id
                         displayName
                         memoryInGb
