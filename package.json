@@ -6,6 +6,7 @@
 	"main": "./dist/runpod-client.umd.cjs",
 	"module": "./dist/runpod-client.js",
 	"types": "./dist/index.d.ts",
+	"license": "MIT",
 	"exports": {
 		".": {
 			"import": "./dist/runpod-client.js",
