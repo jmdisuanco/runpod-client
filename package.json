@@ -19,9 +19,9 @@
 		"make-badges": "istanbul-badges-readme",
 		"test": "jest",
 		"test:badge": "jest --coverage && npm run make-badges",
-		"pub:patch": "npm run test:badge && npm build && npm version patch && npm publish",
-		"pub:minor": "npm run test:badge && npm build && npm version minor && npm publish",
-		"pub:major": "npm run test:badge && npm build && npm version major && npm publish",
+		"pub:patch": "npm run test:badge && npm run build && npm version patch && npm publish",
+		"pub:minor": "npm run test:badge && npm run build && npm version minor && npm publish",
+		"pub:major": "npm run test:badge && npm run build && npm version major && npm publish",
 		"postpublish": "git push --follow-tags"
 	},
 	"devDependencies": {
