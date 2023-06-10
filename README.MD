@@ -53,3 +53,12 @@ console.log(pod);
 const pod = await rp({ action: "stop", id: POD_ID }); //Replace POD_ID your existing pod id
 console.log(pod);
 ```
+
+## List GPU types available
+
+```javascript
+const gpuTypes = await rp({ action: "getGPUTypes" });
+for (const gpuType of gpuTypes) {
+	console.log(gpuType);
+}
+```

@@ -95,6 +95,26 @@ const list = async (url: string) => {
 	const res = await response.json();
 	return res.data.myself.pods;
 };
+const getGPUTypes = async (url: string) => {
+	const response = await fetch(url, {
+		method: "POST",
+		headers: { "Content-Type": "application/json" },
+		body: JSON.stringify({
+			query: `
+                query GpuTypes {
+                    gpuTypes {
+                        id
+                        displayName
+                        memoryInGb
+                    }
+                }
+                    `,
+		}),
+	});
+	const res = await response.json();
+	return res.data.gpuTypes;
+};
+
 const start = async (url: string, id: string, count = 1) => {
 	const response = await fetch(url, {
 		method: "POST",
@@ -203,6 +223,8 @@ const runpod = (key: string) => (args: any) => {
 
 		case "get":
 			return get(url, id);
+		case "getGPUTypes":
+			return getGPUTypes(url);
 		// case "create":
 		// 	return create({ url, ...args });
 		// 	break;

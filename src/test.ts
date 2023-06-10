@@ -28,6 +28,13 @@ test("list function", async () => {
 	expect(pods.length).toBeGreaterThan(0);
 });
 
+test("getGPUTypes function", async () => {
+	const gpus = await runpod(key)({
+		action: "getGPUTypes",
+	});
+	expect(gpus.length).toBeGreaterThan(0);
+});
+
 test("start function", async () => {
 	const pods = await runpod(key)({
 		action: "list",
