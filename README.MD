@@ -27,7 +27,7 @@ const rp = runpod(API_KEY); //make ure to add your api key here
 ## List all pods
 
 ```javascript
-const pods = await rp("list");
+const pods = await rp({ action: "list" });
 for (const pod of pods) {
 	console.log(pod);
 }
@@ -36,24 +36,20 @@ for (const pod of pods) {
 ## Get a specific pod
 
 ```javascript
-const pod = await rp("get", POD_ID); //Replace POD_ID your existing pod id
+const pod = await rp({ action: "get", id: POD_ID }); //Replace POD_ID your existing pod id
 console.log(pod);
 ```
 
 ## Start a pod
 
 ```javascript
-const pod = await rp("start", POD_ID); //Replace POD_ID your existing pod id
+const pod = await rp({ action: "start", id: POD_ID }); //Replace POD_ID your existing pod id
 console.log(pod);
 ```
 
 ## Stop a pod
 
 ```javascript
-const pod = await rp("stop", POD_ID); //Replace POD_ID your existing pod id
+const pod = await rp({ action: "stop", id: POD_ID }); //Replace POD_ID your existing pod id
 console.log(pod);
 ```
-
-## License
-
-MIT © JOHN MARTIN DISUANCO
