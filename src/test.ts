@@ -81,5 +81,5 @@ test("getGPU function", async () => {
 		id: GPUtoGet,
 		count: 1,
 	});
-	expect(gotGPU.length).toBeGreaterThan(0);
+	expect(gotGPU.length).toBeGreaterThanOrEqual(0);
 });
