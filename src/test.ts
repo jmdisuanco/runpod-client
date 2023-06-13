@@ -1,47 +1,54 @@
 import runpod from "./index";
+import { ACTIONS } from "./types";
 require("dotenv").config();
 const key = process.env.API_KEY || "";
+
 // test("create function", async () => {
+// 	//getGPUTypes
+// 	const gpus = await runpod(key)({
+// 		action: "getGPUTypes",
+// 	});
+// 	const GPUtoGet = gpus[0];
 // 	const createdPod = await runpod(key)({
 // 		action: "create",
 // 		cloudType: "ALL",
-// 		name: "RunPod Tensorflow",
+// 		name: "RunPod Pytorch 2-test",
 // 		env: [{ key: "JUPYTER_PASSWORD", value: "rn51hunbpgtltcpac3ol" }],
 // 		gpuCount: 1,
-// 		volumeInGb: 40,
-// 		containerDiskInGb: 40,
+// 		volumeInGb: 20,
+// 		containerDiskInGb: 20,
 // 		minVcpuCount: 2,
-// 		minMemoryInGb: 15,
-// 		gpuTypeId: "NVIDIA RTX A6000",
+// 		minMemoryInGb: GPUtoGet.memoryInGb,
+// 		gpuTypeId: GPUtoGet.id,
 // 		dockerArgs: "",
 // 		ports: "8888/http",
 // 		volumeMountPath: "/workspace",
-// 		imageName: "runpod/tensorflow",
+// 		imageName: "runpod/pytorch:3.10-2.0.0-117",
 // 	});
 // 	expect(createdPod.podFindAndDeployOnDemand.id).toBeDefined();
 // });
 
 test("list function", async () => {
 	const pods = await runpod(key)({
-		action: "list",
+		action: ACTIONS.list,
 	});
 	expect(pods.length).toBeGreaterThan(0);
 });
 
 test("getGPUTypes function", async () => {
 	const gpus = await runpod(key)({
-		action: "getGPUTypes",
+		action: ACTIONS.getGPUTypes,
 	});
 	expect(gpus.length).toBeGreaterThan(0);
 });
 
 test("start function", async () => {
 	const pods = await runpod(key)({
-		action: "list",
+		action: ACTIONS.list,
 	});
 	const podToStart = pods[0];
 	const startedPod = await runpod(key)({
-		action: "start",
+		action: ACTIONS.start,
 		id: podToStart.id,
 	});
 	expect(startedPod.podResume.id).toBe(podToStart.id);
@@ -49,11 +56,11 @@ test("start function", async () => {
 
 test("stop function", async () => {
 	const pods = await runpod(key)({
-		action: "list",
+		action: ACTIONS.list,
 	});
 	const podToStop = pods[0];
 	const stoppedPod = await runpod(key)({
-		action: "stop",
+		action: ACTIONS.stop,
 		id: podToStop.id,
 	});
 	expect(stoppedPod.podStop.id).toBe(podToStop.id);
@@ -61,11 +68,11 @@ test("stop function", async () => {
 
 test("get function", async () => {
 	const pods = await runpod(key)({
-		action: "list",
+		action: ACTIONS.list,
 	});
 	const podToGet = pods[0];
 	const gotPod = await runpod(key)({
-		action: "get",
+		action: ACTIONS.get,
 		id: podToGet.id,
 	});
 	expect(gotPod.pod.runtime).toBeDefined();
@@ -73,11 +80,11 @@ test("get function", async () => {
 
 test("getGPU function", async () => {
 	const gpus = await runpod(key)({
-		action: "getGPUTypes",
+		action: ACTIONS.getGPUTypes,
 	});
 	const GPUtoGet = gpus[0];
 	const gotGPU = await runpod(key)({
-		action: "getGPU",
+		action: ACTIONS.getGPU,
 		id: GPUtoGet,
 		count: 1,
 	});

@@ -14,47 +14,56 @@
 // 	volumeMountPath,
 // 	imageName,
 // }: ICreatePod) => {
+// 	const query = `
+//                 mutation {
+//                     podFindAndDeployOnDemand(
+//                         input: {
+//                         cloudType: ${cloudType || "ALL"}
+//                         gpuCount: ${gpuCount || 1}
+//                         volumeInGb: ${volumeInGb || 40}
+//                         containerDiskInGb: ${containerDiskInGb || 40}
+//                         minVcpuCount: ${minVcpuCount || 1}
+//                         minMemoryInGb: ${minMemoryInGb || 15}
+//                         gpuTypeId: "${gpuTypeId}"
+//                         name: "${name}"
+//                         imageName: "${imageName}"
+//                         dockerArgs: "${dockerArgs || ""}"
+//                         ports: "${ports || "8888/http"}"
+//                         volumeMountPath: "${volumeMountPath || "/workspace"}"
+//                         env: ${JSON.stringify(env)}
+//                     ) {
+//                         id
+//                         imageName
+//                         env
+//                         machineId
+//                         machine {
+//                         podHostId
+//                         }
+//                     }
+//                     }
+//                 `;
 // 	try {
 // 		const response = await fetch(url, {
 // 			method: "POST",
 // 			headers: { "Content-Type": "application/json" },
 // 			body: JSON.stringify({
-// 				query: `mutation {
-//   podFindAndDeployOnDemand(
-//     input: {
-//       cloudType: ${cloudType}
-//       gpuCount: ${gpuCount}
-//       volumeInGb: ${volumeInGb}
-//       containerDiskInGb: ${containerDiskInGb}
-//       minVcpuCount: ${minVcpuCount}
-//       minMemoryInGb: ${minMemoryInGb}
-//       gpuTypeId: "${gpuTypeId}"
-//       name: "${name}"
-//       imageName: "${imageName}"
-//       dockerArgs: "${dockerArgs}"
-//       ports: "${ports}"
-//       volumeMountPath: "${volumeMountPath}"
-//       env: ${env}
-//     }
-//   ) {
-//     id
-//     imageName
-//     env
-//     machineId
-//     machine {
-//       podHostId
-//     }
-//   }
-// }`,
+// 				query: query,
 // 			}),
 // 		});
 // 		const res = await response.json();
-// 		return res.data;
+// 		if (res.errors) {
+// 			console.log(res.errors[0].message);
+// 			return res;
+// 		} else {
+// 			return res.data;
+// 		}
 // 	} catch (error) {
 // 		console.error(error);
 // 		return error;
 // 	}
 // };
+
+import { ACTIONS } from "./types";
 
 const list = async (url: string) => {
 	const response = await fetch(url, {
@@ -207,7 +216,7 @@ const get = async (url: string, id: string) => {
 	const res = await response.json();
 	return res.data;
 };
-const getGPU = async (url: string, id: string, count: number) => {
+const getGPU = async (url: string, id: string, count?: number) => {
 	const response = await fetch(url, {
 		method: "POST",
 		headers: { "Content-Type": "application/json" },
@@ -237,32 +246,33 @@ const getGPU = async (url: string, id: string, count: number) => {
 	}
 };
 
-const runpod = (key: string) => (args: any) => {
-	const { action, id, count } = args;
-	const url = "https://api.runpod.io/graphql?api_key=" + key;
-	switch (action) {
-		case "list":
-			return list(url);
+const runpod =
+	(key: string) =>
+	({ action, id, count }: { action: ACTIONS; id?: string; count?: number }) => {
+		const url = "https://api.runpod.io/graphql?api_key=" + key;
+		switch (action) {
+			case ACTIONS.list:
+				return list(url);
 
-		case "start":
-			return start(url, id, count);
+			case ACTIONS.start:
+				return id ? start(url, id, count) : "Please provide a pod id";
 
-		case "stop":
-			return stop(url, id);
+			case ACTIONS.stop:
+				return id ? stop(url, id) : "Please provide a pod id";
 
-		case "get":
-			return get(url, id);
+			case ACTIONS.get:
+				return id ? get(url, id) : "Please provide a pod id";
 
-		case "getGPU":
-			return getGPU(url, id, count);
+			case ACTIONS.getGPU:
+				return id ? getGPU(url, id, count) : "Please provide a gpu id";
 
-		case "getGPUTypes":
-			return getGPUTypes(url);
-		// case "create":
-		// 	return create({ url, ...args });
-		// 	break;
-		default:
-			break;
-	}
-};
+			case ACTIONS.getGPUTypes:
+				return getGPUTypes(url);
+			// case "create":
+			// 	return create({ url, ...args });
+
+			default:
+				break;
+		}
+	};
 export default runpod;
